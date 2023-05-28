@@ -109,7 +109,7 @@ export default function Home() {
 
       <form
         onSubmit={handleSubmit(HandleSearchApi)}
-        className="mx-4 flex justify-center"
+        className="mx-4 mb-4 flex justify-center"
       >
         {
           loading === true ? (
