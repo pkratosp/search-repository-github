@@ -3,7 +3,22 @@ import { createTheme, NextUIProvider, Text } from "@nextui-org/react"
 export const theme = createTheme({
     type: "light", // "light" ou "dark"
     theme: {
-      colors: {},
+      colors: {
+
+        inputColor: '#241E38',
+        bgInputColor: '#ffffff',
+        
+        primaryLight: '#ffffff',
+        primaryLightHover: '#FFFFFF',
+        primaryLightActive: '#535353',
+        primaryLightContrast: '#535353',
+        primary: '#338ef7',
+        primaryBorder: '#0064D6',
+        primaryBorderHover: '#0064D6',
+        primarySolidHover: '#0064D6',
+        primarySolidContrast: '$white',
+        primaryShadow: '#000000',
+      },
       space: {},
       fonts: {}
     }

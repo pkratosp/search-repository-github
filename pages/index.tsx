@@ -1,5 +1,5 @@
 "use client" // por padrão no nextjs 13 cada página por padrão é habilitado com o Server Side Render, o use cliente garante que não vamos usar o servidor padrão do nextjs para carregar os dados da spa
-import { useState } from 'react' // variavel do react
+import { useState,useEffect } from 'react' // variavel do react
 import { useForm } from 'react-hook-form' // formulario
 import { api } from '@/lib/axios' // endpoint da api
 
@@ -11,8 +11,9 @@ import { SendButton } from '@/components/SendButton/SendButton'
 import { Loading as LoadingComponent } from "@/components/Loading/Loading"
 
 // icones
-import { TelegramLogo } from '@phosphor-icons/react'
-
+import { MagnifyingGlass, TelegramLogo } from '@phosphor-icons/react'
+import Image from 'next/image'
+import Busca from '../public/busca.jpg'
 
 // tipagens
 interface CardItemProps {
@@ -83,13 +84,32 @@ export default function Home() {
     setLoading(false)
   }
 
+  useEffect(()=>{
+
+    console.log(document.getElementsByClassName('nextui-c-cUthvm'))
+
+    
+  },[loading])
+
   return (
     <main>
-      <h2 className="text-center text-4xl font-bold pt-36">Olá! Pesquise algum repositório do GitHub aqui!</h2>
+      <div className="flex justify-center">
+
+      <Image
+                    className="w-[500px] h-[300px] rounded-full"
+                    width={500}
+                    height={300}
+                    src={Busca}
+                    alt={'imagem'}
+                    quality={100}
+                />
+      </div>
+
+      {/* <h2 className="text-center text-4xl font-bold pt-4">Pesquise algum repositório do GitHub aqui!</h2> */}
 
       <form
         onSubmit={handleSubmit(HandleSearchApi)}
-        className="m-4 flex justify-center"
+        className="mx-4 flex justify-center"
       >
         {
           loading === true ? (
@@ -111,15 +131,15 @@ export default function Home() {
               {...register('search', { required: true })}
               className="h-[60px] w-[800px] max-sm:w-full max-md:w-[400px]"
               shadow={false}
-              status="default"
+              status="primary"
               animated={true}
 
               clearable
               contentRightStyling={false}
-              placeholder="Pesquisar..."
+              placeholder="Pesquise por um repositório"
               contentRight={
                 <SendButton key={2}>
-                  <TelegramLogo className="text-slate-100" />
+                  <MagnifyingGlass  className="text-black" />
                 </SendButton>
               }
             />

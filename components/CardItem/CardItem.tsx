@@ -39,7 +39,7 @@ export function CardItem(props: Props) {
                 />
                 <Grid.Container css={{ pl: "$6" }}>
                     <Grid xs={12}>
-                        <Text className="text-2xl" b css={{ lineHeight: "$xs" }}>
+                        <Text className="text-2xl break-words" h2 b css={{ lineHeight: "$xs" }}>
                             {props.props.full_name}
                         </Text>
                     </Grid>

@@ -3,5 +3,9 @@
 @tailwind utilities;
 
 body,html{
-    /* background-color: #09090A; */
+    background-color: #f2f2f2;
 }
+
+/* .nextui-c-cUthvm {
+    background: red!imporntat;
+} */
