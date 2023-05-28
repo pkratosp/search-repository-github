@@ -1,117 +1,172 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
+"use client" // por padrão no nextjs 13 cada página por padrão é habilitado com o Server Side Render, o use cliente garante que não vamos usar o servidor padrão do nextjs para carregar os dados da spa
+import { useState } from 'react' // variavel do react
+import { useForm } from 'react-hook-form' // formulario
+import { api } from '@/lib/axios' // endpoint da api
 
-const inter = Inter({ subsets: ['latin'] })
+// componentes
+import { Grid, Input, Loading, Pagination } from '@nextui-org/react'
+import { ErrorSearch } from '@/components/ErrorSearch/ErrorSearch'
+import { CardItem } from '@/components/CardItem/CardItem'
+import { SendButton } from '@/components/SendButton/SendButton'
+import { Loading as LoadingComponent } from "@/components/Loading/Loading"
+
+// icones
+import { TelegramLogo } from '@phosphor-icons/react'
+
+
+// tipagens
+interface CardItemProps {
+  id: string
+  owner: {
+    avatar_url: string
+  }
+  full_name: string
+  description: string
+  topics: string[] | []
+  language: string
+  html_url: string
+  name: string
+}
+
+interface FormProps {
+  search: string
+}
 
 export default function Home() {
+
+  const { handleSubmit, register } = useForm<FormProps>() // para usar o react hook forms devemos buscar as duas funções basica para o formulário
+  // o handleSubmit serve para utilizar no evendo de submit do formulário
+  // o register é para definir o "name" do input 
+
+  // estados definidor
+  const [isError, setIsError] = useState<boolean>(false)
+  const [search, setSearch] = useState('')
+  const [loading, setLoading] = useState<boolean>(false)
+  const [listResult, setListResult] = useState<CardItemProps[]>([]) // onde vai ficar os dados
+  const [totalItens, setTotalItens] = useState<number>(0)
+
+  // envia a requisição para a API do github
+  async function HandleSearchApi(data: FormProps) {
+    setLoading(true)
+    try {
+      setIsError(false)
+      setSearch(data.search) // adiciono nesse state para facilitar na paginação
+
+      const result = await api.get(`${data.search}`)
+
+      setTotalItens(
+        result.data.total_count <= 1000 ? result.data.total_count :
+          1000
+      ) // na API do github temos limite de dados para consultar
+      setListResult(result.data.items)
+    } catch (error) {
+      setIsError(true) // caso ocorra algum erro na solicitação
+    }
+
+    setLoading(false)
+  }
+
+  // para listar mais repositórios do github, opitei por fazer outra solicitação para a API novamente mesmo sabendo do bloqueio por varias requisições em um unico ip
+  // montei deste modo porque na minha opinião 30 registros é pouco interessante
+  async function handleSearchApiPage(search: string, page: number) {
+    setLoading(true)
+
+    try {
+      setIsError(false)
+      const result = await api.get(`${search}&page=${page}`)
+
+      setListResult(result.data.items)
+    } catch (error) {
+      setIsError(true)
+    }
+
+    setLoading(false)
+  }
+
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+    <main>
+      <h2 className="text-center text-4xl font-bold pt-36">Olá! Pesquise algum repositório do GitHub aqui!</h2>
+
+      <form
+        onSubmit={handleSubmit(HandleSearchApi)}
+        className="m-4 flex justify-center"
+      >
+        {
+          loading === true ? (
+            <Input
+              aria-label="Buscando..." //para acessbilidade
+              className="h-[60px] w-[800px] max-sm:w-full max-md:w-[400px]"
+              shadow={false}
+              status="default"
+              disabled
+              bordered
+              animated={true}
+              color="primary"
+              placeholder="Loading..."
+              contentRight={<Loading size="xs" />}
             />
-          </a>
-        </div>
-      </div>
+          ) : (
+            <Input
+              aria-label="Digite algo para pesquisar repositórios do github" //para acessbilidade
+              {...register('search', { required: true })}
+              className="h-[60px] w-[800px] max-sm:w-full max-md:w-[400px]"
+              shadow={false}
+              status="default"
+              animated={true}
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+              clearable
+              contentRightStyling={false}
+              placeholder="Pesquisar..."
+              contentRight={
+                <SendButton key={2}>
+                  <TelegramLogo className="text-slate-100" />
+                </SendButton>
+              }
+            />
+          )
+        }
+      </form>
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+      {
+        loading === true ? (
+          <div className="w-full py-40">
+            <LoadingComponent />
+          </div>
+        ) : (
+          isError === true ? (
+            <ErrorSearch />
+          ) : (
+            <div className="grid grid-cols-3 gap-3 mx-4 max-md:block">
+              {
+                listResult.length == 0 ? (
+                  <div></div>
+                ) : listResult.map((element: CardItemProps) => (
+                  <CardItem key={element.id} props={element} />
+                ))
+              }
+            </div>
+          )
+        )
+      }
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
+      <div className="flex justify-center my-10">
+        {
+          isError === true ? null : (
+            listResult.length > 0 ? (
+              <Pagination
+                shadow
+                noMargin
+                total={totalItens / 30 > Math.round(totalItens / 30) ? Math.round(totalItens / 30) + 1 : Math.round(totalItens / 30)}
+                initialPage={1}
+                onChange={(page: number) => {
+                  handleSearchApiPage(search, page)
+                }}
+              />
+            ) : null
+          )
+        }
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
       </div>
     </main>
   )
