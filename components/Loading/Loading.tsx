@@ -9,7 +9,7 @@ export function Loading() {
             <LoadingUI
                 type="points"
             >
-                <span className="text-slate-100">Carregando...</span>
+                <span>Carregando...</span>
             </LoadingUI>
         </div>
     )

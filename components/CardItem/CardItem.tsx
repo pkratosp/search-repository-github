@@ -2,7 +2,7 @@
 import Image from 'next/image' // para usar imagem com o next
 
 // componetes
-import { Badge, Grid } from '@nextui-org/react'
+import { Badge, Grid, Card, Text, Link } from '@nextui-org/react'
 import { ArrowSquareOut } from '@phosphor-icons/react' // icone
 
 // tipagens
@@ -23,13 +23,13 @@ interface Props {
 
 export function CardItem(props: Props) {
     return (
-        <div
+        <Card
             key={props.props.id}
             aria-label={props.props.description}
-            aria-labelledby={props.props.description}
-            className="h-fit bg-zinc-900 border-2 border-zinc-800 p-4 m-2 rounded-xl max-md:my-5 text-slate-100"
+            css={{ p: "$6", mw: "400px" }}
+            className="max-md:m-4"
         >
-            <div className="flex flex-1 items-center">
+            <Card.Header>
                 <Image
                     className="w-[30px] h-[30px] rounded-full"
                     width={30}
@@ -37,41 +37,28 @@ export function CardItem(props: Props) {
                     src={props.props.owner.avatar_url}
                     alt={props.props.full_name}
                 />
-                <h2 className="mx-2 text-xl">{props.props.full_name}</h2>
-
-            </div>
-
-            <p className="text-base py-4">{props.props.description ? props.props.description.toString().substring(0,300): props.props.description}</p>
-            {
-                props.props.topics.length == 0 ? (
-                    <div></div>
-                ) : (
-                    <Grid.Container gap={1}>
-                        {
-                            props.props.topics.map((element: string) => (
-                                <Grid key={element}>
-                                    <Badge
-                                        key={element}
-                                        color={"default"}
-                                        disableOutline
-                                        variant="flat"
-                                    >
-                                        {element}
-                                    </Badge>
-                                </Grid>
-                            ))
-                        }
-                    </Grid.Container>
-                )
-            }
-            <p className="text-base">{props.props.language}</p>
-            <a
-                className="text-gray-500 flex py-2"
-                href={props.props.html_url}
-                target="_blank"
-            >
-                <ArrowSquareOut weight="bold" /> {props.props.name}
-            </a>
-        </div>
+                <Grid.Container css={{ pl: "$6" }}>
+                    <Grid xs={12}>
+                        <Text className="text-2xl" b css={{ lineHeight: "$xs" }}>
+                            {props.props.full_name}
+                        </Text>
+                    </Grid>
+                </Grid.Container>
+            </Card.Header>
+            <Card.Body css={{ py: "$2" }}>
+                <Text>
+                    {props.props.description ? props.props.description.toString().substring(0, 300) : props.props.description}
+                </Text>
+            </Card.Body>
+            <Card.Footer>
+                <Link
+                    color="primary"
+                    target="_blank"
+                    href={props.props.html_url}
+                >
+                    {props.props.name} <ArrowSquareOut weight="bold" className="mx-1"/>
+                </Link>
+            </Card.Footer>
+        </Card>
     )
 }

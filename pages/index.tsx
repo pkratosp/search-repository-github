@@ -136,7 +136,7 @@ export default function Home() {
           isError === true ? (
             <ErrorSearch />
           ) : (
-            <div className="grid grid-cols-3 gap-3 mx-4 max-md:block">
+            <div className="grid grid-cols-3 gap-3 mx-4 max-md:block max-md:gap-0 max-md:mx-0">
               {
                 listResult.length == 0 ? (
                   <div></div>
