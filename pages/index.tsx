@@ -44,6 +44,7 @@ export default function Home() {
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState<boolean>(false)
   const [listResult, setListResult] = useState<CardItemProps[]>([]) // onde vai ficar os dados
+  const [page,setPage] = useState<number>(1)
   const [totalItens, setTotalItens] = useState<number>(0)
 
   // envia a requisição para a API do github
@@ -77,6 +78,7 @@ export default function Home() {
       const result = await api.get(`${search}&page=${page}`)
 
       setListResult(result.data.items)
+      setPage(page)
     } catch (error) {
       setIsError(true)
     }
@@ -84,25 +86,17 @@ export default function Home() {
     setLoading(false)
   }
 
-  useEffect(()=>{
-
-    console.log(document.getElementsByClassName('nextui-c-cUthvm'))
-
-    
-  },[loading])
-
   return (
     <main>
       <div className="flex justify-center">
-
-      <Image
-                    className="w-[500px] h-[300px] rounded-full"
-                    width={500}
-                    height={300}
-                    src={Busca}
-                    alt={'imagem'}
-                    quality={100}
-                />
+        <Image
+          className="w-[500px] h-[300px] rounded-full"
+          width={500}
+          height={300}
+          src={Busca}
+          alt={"imagem"}
+          quality={100}
+        />
       </div>
 
       {/* <h2 className="text-center text-4xl font-bold pt-4">Pesquise algum repositório do GitHub aqui!</h2> */}
@@ -111,91 +105,82 @@ export default function Home() {
         onSubmit={handleSubmit(HandleSearchApi)}
         className="mx-4 mb-4 flex justify-center"
       >
-        {
-          loading === true ? (
-            <div className="w-[800px] max-md:w-[90%]">
-              <Input
-                aria-label="Buscando..." //para acessbilidade
-                className="h-[60px]"
-                fullWidth
-                shadow={false}
-                status="primary"
-                disabled
-                bordered
-                animated={true}
-                color="primary"
-                placeholder="Loading..."
-                contentRight={<Loading size="xs" />}
-              />
-            </div>
-          ) : (
-            <div className="w-[800px] max-md:w-[90%]">
-              <Input
-                aria-label="Digite algo para pesquisar repositórios do github" //para acessbilidade
-                {...register('search', { required: true })}
-                className="h-[60px]"
-                fullWidth
-                shadow={false}
-                status="primary"
-                animated={true}
-  
-                clearable
-                contentRightStyling={false}
-                placeholder="Pesquise por um repositório"
-                contentRight={
-                  <SendButton key={2}>
-                    <MagnifyingGlass  className="text-black" />
-                  </SendButton>
-                }
-              />
-            </div>
-          )
-        }
-      </form>
-
-      {
-        loading === true ? (
-          <div className="w-full py-40">
-            <LoadingComponent />
+        {loading === true ? (
+          <div className="w-[800px] max-md:w-[90%]">
+            <Input
+              aria-label="Buscando..." //para acessbilidade
+              className="h-[60px]"
+              fullWidth
+              shadow={false}
+              status="primary"
+              disabled
+              bordered
+              animated={true}
+              color="primary"
+              placeholder="Loading..."
+              contentRight={<Loading size="xs" />}
+            />
           </div>
         ) : (
-          isError === true ? (
-            <ErrorSearch />
-          ) : (
-            <div className="flex flex-wrap justify-around max-md:block">
-              {
-                listResult.length == 0 ? (
-                  <div></div>
-                ) : listResult.map((element: CardItemProps) => (
-                  <CardItem key={element.id} props={element} />
-                ))
+          <div className="w-[800px] max-md:w-[90%]">
+            <Input
+              aria-label="Digite algo para pesquisar repositórios do github" //para acessbilidade
+              {...register("search", { required: true })}
+              className="h-[60px]"
+              fullWidth
+              shadow={false}
+              status="primary"
+              animated={true}
+              clearable
+              contentRightStyling={false}
+              placeholder="Pesquise por um repositório"
+              contentRight={
+                <SendButton key={2}>
+                  <MagnifyingGlass className="text-black" />
+                </SendButton>
               }
-            </div>
-          )
-        )
-      }
+            />
+          </div>
+        )}
+      </form>
 
+      {loading === true ? (
+        <div className="w-full py-40">
+          <LoadingComponent />
+        </div>
+      ) : isError === true ? (
+        <ErrorSearch />
+      ) : (
+        <div className="flex flex-wrap justify-around max-md:block">
+          {listResult.length == 0 ? (
+            <div></div>
+          ) : (
+            listResult.map((element: CardItemProps) => (
+              <CardItem key={element.id} props={element} />
+            ))
+          )}
+        </div>
+      )}
 
       <div className="flex justify-center my-10">
-        {
-          loading === true ? null : (
-            isError === true ? null : (
-              listResult.length > 0 ? (
-                <Pagination
-                  shadow
-                  noMargin
-                  total={totalItens / 30 > Math.round(totalItens / 30) ? Math.round(totalItens / 30) + 1 : Math.round(totalItens / 30)}
-                  initialPage={1}
-                  onChange={(page: number) => {
-                    handleSearchApiPage(search, page)
-                  }}
-                />
-              ) : null
-            )
-          )
-        }
-
+        {loading === true ? null : isError === true ? null : listResult.length >
+          0 ? (
+          <Pagination
+            shadow
+            noMargin
+            total={
+              totalItens / 30 > Math.round(totalItens / 30)
+                ? Math.round(totalItens / 30) + 1
+                : Math.round(totalItens / 30)
+            }
+            page={page}
+            initialPage={1}
+            onChange={(page: number) => {
+              handleSearchApiPage(search, page);
+            }}
+          />
+        ) : null}
       </div>
     </main>
-  )
+  );
 }
