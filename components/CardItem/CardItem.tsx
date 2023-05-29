@@ -27,7 +27,7 @@ export function CardItem(props: Props) {
             key={props.props.id}
             aria-label={props.props.description}
             css={{ p: "$6", mw: "400px" }}
-            className="max-md:m-4"
+            className="max-md:m-4 my-2 max-md:mx-auto max-md:my-4 max-sm:w-[90%]"
         >
             <Card.Header>
                 <Image

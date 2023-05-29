@@ -113,36 +113,42 @@ export default function Home() {
       >
         {
           loading === true ? (
-            <Input
-              aria-label="Buscando..." //para acessbilidade
-              className="h-[60px] w-[800px] max-sm:w-full max-md:w-[400px]"
-              shadow={false}
-              status="default"
-              disabled
-              bordered
-              animated={true}
-              color="primary"
-              placeholder="Loading..."
-              contentRight={<Loading size="xs" />}
-            />
+            <div className="w-[800px] max-md:w-[90%]">
+              <Input
+                aria-label="Buscando..." //para acessbilidade
+                className="h-[60px]"
+                fullWidth
+                shadow={false}
+                status="primary"
+                disabled
+                bordered
+                animated={true}
+                color="primary"
+                placeholder="Loading..."
+                contentRight={<Loading size="xs" />}
+              />
+            </div>
           ) : (
-            <Input
-              aria-label="Digite algo para pesquisar repositórios do github" //para acessbilidade
-              {...register('search', { required: true })}
-              className="h-[60px] w-[800px] max-sm:w-full max-md:w-[400px]"
-              shadow={false}
-              status="primary"
-              animated={true}
-
-              clearable
-              contentRightStyling={false}
-              placeholder="Pesquise por um repositório"
-              contentRight={
-                <SendButton key={2}>
-                  <MagnifyingGlass  className="text-black" />
-                </SendButton>
-              }
-            />
+            <div className="w-[800px] max-md:w-[90%]">
+              <Input
+                aria-label="Digite algo para pesquisar repositórios do github" //para acessbilidade
+                {...register('search', { required: true })}
+                className="h-[60px]"
+                fullWidth
+                shadow={false}
+                status="primary"
+                animated={true}
+  
+                clearable
+                contentRightStyling={false}
+                placeholder="Pesquise por um repositório"
+                contentRight={
+                  <SendButton key={2}>
+                    <MagnifyingGlass  className="text-black" />
+                  </SendButton>
+                }
+              />
+            </div>
           )
         }
       </form>
@@ -156,7 +162,7 @@ export default function Home() {
           isError === true ? (
             <ErrorSearch />
           ) : (
-            <div className="grid grid-cols-3 gap-3 mx-4 max-md:block max-md:gap-0 max-md:mx-0">
+            <div className="flex flex-wrap justify-around max-md:block">
               {
                 listResult.length == 0 ? (
                   <div></div>
@@ -172,18 +178,20 @@ export default function Home() {
 
       <div className="flex justify-center my-10">
         {
-          isError === true ? null : (
-            listResult.length > 0 ? (
-              <Pagination
-                shadow
-                noMargin
-                total={totalItens / 30 > Math.round(totalItens / 30) ? Math.round(totalItens / 30) + 1 : Math.round(totalItens / 30)}
-                initialPage={1}
-                onChange={(page: number) => {
-                  handleSearchApiPage(search, page)
-                }}
-              />
-            ) : null
+          loading === true ? null : (
+            isError === true ? null : (
+              listResult.length > 0 ? (
+                <Pagination
+                  shadow
+                  noMargin
+                  total={totalItens / 30 > Math.round(totalItens / 30) ? Math.round(totalItens / 30) + 1 : Math.round(totalItens / 30)}
+                  initialPage={1}
+                  onChange={(page: number) => {
+                    handleSearchApiPage(search, page)
+                  }}
+                />
+              ) : null
+            )
           )
         }
 
