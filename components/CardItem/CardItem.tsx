@@ -21,6 +21,7 @@ interface Props {
     }
 }
 
+// componentes dos cards listando os repositórios
 export function CardItem(props: Props) {
     return (
         <Card

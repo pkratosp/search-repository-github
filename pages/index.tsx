@@ -61,6 +61,7 @@ export default function Home() {
           1000
       ) // na API do github temos limite de dados para consultar
       setListResult(result.data.items)
+      setPage(1) // atualiza o state para mudar na a indicação da pagina
     } catch (error) {
       setIsError(true) // caso ocorra algum erro na solicitação
     }
@@ -78,7 +79,7 @@ export default function Home() {
       const result = await api.get(`${search}&page=${page}`)
 
       setListResult(result.data.items)
-      setPage(page)
+      setPage(page)// atualiza o state para mudar na a indicação da pagina
     } catch (error) {
       setIsError(true)
     }

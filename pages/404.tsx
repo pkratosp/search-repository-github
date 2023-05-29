@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Gif404 from '../public/404.gif'
 
-
+// paginão 404 não encontrada
 export default function PageNotFount() {
     return (
         <div className="w-full h-screen">

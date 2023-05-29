@@ -1,5 +1,6 @@
-import { createTheme, NextUIProvider, Text } from "@nextui-org/react"
+import { createTheme } from "@nextui-org/react"
 
+// configuração de cores do tema do nextui
 export const theme = createTheme({
     type: "light", // "light" ou "dark"
     theme: {

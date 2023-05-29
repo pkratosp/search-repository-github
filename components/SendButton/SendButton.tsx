@@ -2,6 +2,8 @@
 // stilização manual para deixar um efeito de envio no input
 import { styled } from '@nextui-org/react';
 
+
+// stylo da animação do botao no input
 export const SendButton = styled('button', {
   // reseta o style do botao
   background: 'transparent',
