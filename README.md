@@ -2,7 +2,15 @@ Este é um projeto Next.js inicializado com create-next-app
 
 ## Getting Started
 
-Primeiro, execute o servidor de desenvolvimento:
+Primeiro, instale as dependencias necessárias:
+
+```bash
+npm install
+# ou
+yarn install
+```
+
+Depois execute o servidor de desenvolvimento:
 
 ```bash
 npm run dev
@@ -10,7 +18,7 @@ npm run dev
 yarn dev
 ```
 
-Antes de executar a aplicação crei um arquivo .env 
+***!Importante, Antes de executar a aplicação crei um arquivo .env 
 No arquivo adicione a segunite linha
 
 ```bash
