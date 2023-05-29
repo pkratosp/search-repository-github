@@ -8,8 +8,13 @@ Primeiro, execute o servidor de desenvolvimento:
 npm run dev
 # ou
 yarn dev
-# ou
-pnpm dev
+```
+
+Antes de executar a aplicação crei um arquivo .env 
+No arquivo adicione a segunite linha
+
+```bash
+API_GITHUB=https://api.github.com/search/repositories?q=
 ```
 
 Abra [http://localhost:3000](http://localhost:3000) com seu navegador para ver o resultado.
