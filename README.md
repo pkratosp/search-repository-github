@@ -18,7 +18,7 @@ npm run dev
 yarn dev
 ```
 
-***!Importante, Antes de executar a aplicação crei um arquivo .env 
+## Importante, Antes de executar a aplicação crei um arquivo .env 
 No arquivo adicione a segunite linha
 
 ```bash
