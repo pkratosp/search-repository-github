@@ -2,7 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   env: {
-      API_GITHUB: process.env.API_GITHUB
+      API_GITHUB: process.env.API_GITHUB,
+      API_USER_GITHUB: process.env.API_USER_GITHUB
   },
   images: {
     remotePatterns: [
