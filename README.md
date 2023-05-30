@@ -55,3 +55,6 @@ Em resumo, optei pelo React e Next.js devido à minha experiência com esses fra
 - Pesquisa de repositórios do GitHub e de usuários.
 - Exibição de resultados de pesquisa em uma lista paginada.
 - Detalhes do repositório, descrição, imagem e link do repositório.
+
+## Link do projeto
+https://search-repository-github.vercel.app/
