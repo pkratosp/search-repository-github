@@ -23,6 +23,7 @@ No arquivo adicione a segunite linha
 
 ```bash
 API_GITHUB=https://api.github.com/search/repositories?q=
+API_USER_GITHUB=https://api.github.com/search/
 ```
 
 Abra [http://localhost:3000](http://localhost:3000) com seu navegador para ver o resultado.
