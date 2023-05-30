@@ -2,6 +2,8 @@
 import { useState,useEffect } from 'react' // variavel do react
 import { useForm } from 'react-hook-form' // formulario
 import { api, apiUser } from '@/lib/axios' // endpoint da api
+import Image from 'next/image'
+import Busca from '../public/busca.jpg'
 
 // componentes
 import { Grid, Input, Loading, Pagination } from '@nextui-org/react'
@@ -11,9 +13,7 @@ import { SendButton } from '@/components/SendButton/SendButton'
 import { Loading as LoadingComponent } from "@/components/Loading/Loading"
 
 // icones
-import { MagnifyingGlass, TelegramLogo } from '@phosphor-icons/react'
-import Image from 'next/image'
-import Busca from '../public/busca.jpg'
+import { MagnifyingGlass } from '@phosphor-icons/react'
 
 // tipagens
 interface CardItemProps {
@@ -87,7 +87,6 @@ export default function Home() {
 
       }
 
-
       setPage(1) // atualiza o state para mudar na a indicação da pagina
     } catch (error) {
       setIsError(true) // caso ocorra algum erro na solicitação
@@ -103,7 +102,6 @@ export default function Home() {
 
     try {
       setIsError(false)
-
 
       if(search.includes('@')) {
         const result = await apiUser.get(`users?q=${search.split('@')[1]}&page=${page}`) // pesquisa o usuario
@@ -134,8 +132,6 @@ export default function Home() {
           quality={100}
         />
       </div>
-
-      {/* <h2 className="text-center text-4xl font-bold pt-4">Pesquise algum repositório do GitHub aqui!</h2> */}
 
       <form
         onSubmit={handleSubmit(HandleSearchApi)}
@@ -179,7 +175,7 @@ export default function Home() {
           </div>
         )}
       </form>
-      <h2 className="text-center text-orange-600 font-bold mb-4">Para pesquisar um perfil de usuário coloque um @ em frente ao nome de usuário</h2>
+      <h2 className="text-center text-orange-600 font-bold mb-4 px-2">Para pesquisar um perfil de usuário coloque um @ em frente ao nome de usuário</h2>
 
       {loading === true ? (
         <div className="w-full py-40">

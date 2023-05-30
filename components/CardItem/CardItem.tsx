@@ -61,7 +61,7 @@ export function CardItem(props: Props) {
                     target="_blank"
                     href={props.props.html_url}
                 >
-                    {props.props.name ? props.props.name : 'Abrir perfil'} <ArrowSquareOut weight="bold" className="mx-1"/>
+                    {props.props.name ? props.props.name : 'Abrir perfil'} <ArrowSquareOut weight="bold" className="mx-1" />
                 </Link>
             </Card.Footer>
         </Card>
